@@ -816,8 +816,8 @@ class HunyuanImagePipeline:
         self.device = device
         if self.dit is not None:
             self.dit = self.dit.to(device, non_blocking=True)
-        if self.text_encoder is not None:
-            self.text_encoder = self.text_encoder.to(device, non_blocking=True)
+        # if self.text_encoder is not None:
+            # self.text_encoder = self.text_encoder.to(device, non_blocking=True)
         if self.vae is not None:
             self.vae = self.vae.to(device, non_blocking=True)
         return self
