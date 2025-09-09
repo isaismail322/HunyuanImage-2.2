@@ -48,10 +48,12 @@ except ImportError as e:
     print("For checkpoint downloads, also install: pip install -U 'huggingface_hub[cli]' modelscope")
     sys.exit(1)
 
+
+BASE_DIR = os.environ.get('HUNYUANIMAGE_V2_1_MODEL_ROOT', './ckpts')
 class CheckpointDownloader:
     """Handles downloading of all required checkpoints for HunyuanImage."""
     
-    def __init__(self, base_dir: str = "./ckpts"):
+    def __init__(self, base_dir: str = BASE_DIR):
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(exist_ok=True)
         
@@ -418,7 +420,7 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                         with gr.Row():
                             seed = gr.Number(
                                 label="Seed", value=649151, precision=0,
-                                info="Random seed for reproducibility"
+                                info="Random seed for reproducibility. (-1 for random seed)"
                             )
                             use_reprompt = gr.Checkbox(
                                 label="Use Reprompt", value=True,
