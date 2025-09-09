@@ -298,6 +298,9 @@ class HunyuanImageApp:
 
             self.pipeline.to('cpu')
             self.pipeline.refiner_pipeline.to('cuda')
+            if seed == -1:
+                import random
+                seed = random.randint(100000, 999999)
             
             # Use refiner from the main pipeline
             refined_image = self.pipeline.refiner_pipeline(
@@ -540,7 +543,7 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                             )
                         
                         refine_seed = gr.Number(
-                            label="Seed", value=649151, precision=0,
+                            label="Seed", value=-1, precision=0,
                             info="Random seed for reproducibility"
                         )
                         
