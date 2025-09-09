@@ -336,7 +336,6 @@ class HunyuanImageApp:
                 height=height,
                 num_inference_steps=num_inference_steps,
                 guidance_scale=guidance_scale,
-                shift=5,
                 seed=seed
             )
             self.print_peak_memory()
