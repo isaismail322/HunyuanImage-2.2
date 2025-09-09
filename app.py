@@ -349,7 +349,7 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
     """Create the Gradio interface."""
     app = HunyuanImageApp(auto_load=auto_load, use_distilled=use_distilled, device=device)
     
-    # Custom CSS for better styling
+    # Custom CSS for better styling with dark mode support
     css = """
     .gradio-container {
         max-width: 1200px !important;
@@ -362,11 +362,21 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
         margin-bottom: 20px;
     }
     .model-info {
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
+        background: var(--background-fill-secondary);
+        border: 1px solid var(--border-color-primary);
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 20px;
+        color: var(--body-text-color);
+    }
+    .model-info h1, .model-info h2, .model-info h3 {
+        color: var(--body-text-color) !important;
+    }
+    .model-info p, .model-info li {
+        color: var(--body-text-color) !important;
+    }
+    .model-info strong {
+        color: var(--body-text-color) !important;
     }
     """
     
