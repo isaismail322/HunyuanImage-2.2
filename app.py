@@ -219,7 +219,7 @@ class HunyuanImageApp:
                       seed: int,
                       use_reprompt: bool,
                       use_refiner: bool,
-                      # use_distilled: bool
+                      progress=gr.Progress(track_tqdm=True)
                       ) -> Tuple[Optional[Image.Image], str]:
         """Generate an image using the HunyuanImage pipeline."""
         try:
@@ -290,7 +290,8 @@ class HunyuanImageApp:
                     height: int,
                     num_inference_steps: int,
                     guidance_scale: float,
-                    seed: int) -> Tuple[Optional[Image.Image], str]:
+                    seed: int,
+                    progress=gr.Progress(track_tqdm=True)) -> Tuple[Optional[Image.Image], str]:
         """Refine an image using the refiner pipeline."""
         try:
             if image is None:
