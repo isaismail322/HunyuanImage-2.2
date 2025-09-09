@@ -426,7 +426,7 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                         
                         with gr.Row():
                             seed = gr.Number(
-                                label="Seed", value=649151, precision=0,
+                                label="Seed", value=-1, precision=0,
                                 info="Random seed for reproducibility. (-1 for random seed)"
                             )
                             use_reprompt = gr.Checkbox(
@@ -434,8 +434,8 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                                 info="Enhance prompt automatically"
                             )
                             use_refiner = gr.Checkbox(
-                                label="Use Refiner", value=False,
-                                info="Apply refiner after generation (Refiner is not supported yet; coming soon.)",
+                                label="Use Refiner", value=True,
+                                info="Apply refiner after generation",
                                 interactive=True
                             )
                         
