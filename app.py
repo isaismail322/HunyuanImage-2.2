@@ -172,6 +172,11 @@ def load_pipeline(use_distilled: bool = False, device: str = "cuda"):
             enable_reprompt_model_offloading=True,
             enable_refiner_offloading=True
         )
+        pipeline.to('cpu')
+        refiner_pipeline = pipeline.refiner_pipeline
+        refiner_pipeline.to('cpu')
+        reprompt_model = pipeline.reprompt_model
+
         print("✓ Pipeline loaded successfully")
         return pipeline
     except Exception as e:
