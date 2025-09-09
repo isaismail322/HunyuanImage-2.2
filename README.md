@@ -1,4 +1,14 @@
-
+---
+title: HunyuanImage 2.1
+emoji: 🔥
+colorFrom: gray
+colorTo: green
+sdk: gradio
+sdk_version: 5.44.1
+app_file: app.py
+pinned: false
+---
+```
 [中文阅读](./README_CN.md)
 
 <p align="center">
