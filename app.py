@@ -180,9 +180,9 @@ def load_pipeline(use_distilled: bool = False, device: str = "cuda"):
         raise
 
 
-if IS_SPACE:
-    downloader = CheckpointDownloader()
-    downloader.download_all_checkpoints()
+# if IS_SPACE:
+#     downloader = CheckpointDownloader()
+#     downloader.download_all_checkpoints()
 
 pipeline = load_pipeline(use_distilled=False, device="cuda")
 class HunyuanImageApp:
