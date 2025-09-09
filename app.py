@@ -219,7 +219,7 @@ class HunyuanImageApp:
                       seed: int,
                       use_reprompt: bool,
                       use_refiner: bool,
-                      # use_distilled: bool
+                      progress=gr.Progress(track_tqdm=True)
                       ) -> Tuple[Optional[Image.Image], str]:
         """Generate an image using the HunyuanImage pipeline."""
         try:
@@ -290,7 +290,8 @@ class HunyuanImageApp:
                     height: int,
                     num_inference_steps: int,
                     guidance_scale: float,
-                    seed: int) -> Tuple[Optional[Image.Image], str]:
+                    seed: int,
+                    progress=gr.Progress(track_tqdm=True)) -> Tuple[Optional[Image.Image], str]:
         """Refine an image using the refiner pipeline."""
         try:
             if image is None:
@@ -426,11 +427,13 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                         with gr.Row():
                             width = gr.Slider(
                                 minimum=512, maximum=2048, step=64, value=2048,
-                                label="Width", info="Image width in pixels"
+                                label="Width", info="Image width in pixels",
+                                interactive=False
                             )
                             height = gr.Slider(
                                 minimum=512, maximum=2048, step=64, value=2048,
-                                label="Height", info="Image height in pixels"
+                                label="Height", info="Image height in pixels",
+                                interactive=False
                             )
                         
                         with gr.Row():
@@ -440,7 +443,8 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                             )
                             guidance_scale = gr.Slider(
                                 minimum=1.0, maximum=10.0, step=0.1, value=3.5,
-                                label="Guidance Scale", info="How closely to follow the prompt"
+                                label="Guidance Scale", info="How closely to follow the prompt",
+                                interactive=False
                             )
                         
                         with gr.Row():
