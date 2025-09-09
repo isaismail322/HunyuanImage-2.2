@@ -200,6 +200,15 @@ class HunyuanImageApp:
 
         self.pipeline = pipeline
         self.current_use_distilled = None
+        
+        # Define aspect ratio mappings
+        self.aspect_ratio_mappings = {
+            "16:9": (2560, 1536),
+            "4:3": (2304, 1792),
+            "1:1": (2048, 2048),
+            "3:4": (1792, 2304),
+            "9:16": (1536, 2560)
+        }
 
 
     def print_peak_memory(self):
@@ -207,6 +216,16 @@ class HunyuanImageApp:
         stats = torch.cuda.memory_stats()
         peak_bytes_requirement = stats["allocated_bytes.all.peak"]
         print(f"Before refiner Peak memory requirement: {peak_bytes_requirement / 1024 ** 3:.2f} GB")
+    
+    def update_resolution(self, aspect_ratio_choice: str) -> Tuple[int, int]:
+        """Update width and height based on selected aspect ratio."""
+        # Extract the aspect ratio key from the choice (e.g., "16:9" from "16:9 (2560×1536)")
+        aspect_key = aspect_ratio_choice.split(" (")[0]
+        if aspect_key in self.aspect_ratio_mappings:
+            return self.aspect_ratio_mappings[aspect_key]
+        else:
+            # Default to 1:1 if not found
+            return self.aspect_ratio_mappings["1:1"]
 
     @space_context(duration=300)
     def generate_image(self, 
@@ -423,15 +442,25 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                             value=""
                         )
                         
-                        with gr.Row():
-                            width = gr.Slider(
-                                minimum=512, maximum=2048, step=64, value=2048,
-                                label="Width", info="Image width in pixels"
-                            )
-                            height = gr.Slider(
-                                minimum=512, maximum=2048, step=64, value=2048,
-                                label="Height", info="Image height in pixels"
-                            )
+                        # Predefined aspect ratios
+                        aspect_ratios = [
+                            ("16:9 (2560×1536)", "16:9"),
+                            ("4:3 (2304×1792)", "4:3"), 
+                            ("1:1 (2048×2048)", "1:1"),
+                            ("3:4 (1792×2304)", "3:4"),
+                            ("9:16 (1536×2560)", "9:16")
+                        ]
+                        
+                        aspect_ratio = gr.Radio(
+                            choices=aspect_ratios,
+                            value="1:1",
+                            label="Aspect Ratio",
+                            info="Select the aspect ratio for image generation"
+                        )
+                        
+                        # Hidden width and height inputs that get updated based on aspect ratio
+                        width = gr.Number(value=2048, visible=False)
+                        height = gr.Number(value=2048, visible=False)
                         
                         with gr.Row():
                             num_inference_steps = gr.Slider(
@@ -579,6 +608,13 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
             #             )
         
         # Event handlers
+        # Update width and height when aspect ratio changes
+        aspect_ratio.change(
+            fn=app.update_resolution,
+            inputs=[aspect_ratio],
+            outputs=[width, height]
+        )
+        
         generate_btn.click(
             fn=app.generate_image,
             inputs=[
