@@ -259,6 +259,25 @@ class HunYuanImageRefinerPipeline(HunyuanImagePipeline):
         """
         return cls(config=config)
 
+    def to(self, device: str | torch.device):
+        """
+        Move pipeline to specified device.
+
+        Args:
+            device: Target device string
+
+        Returns:
+            Self
+        """
+        self.device = device
+        if self.dit is not None:
+            self.dit = self.dit.to(device, non_blocking=True)
+        # if self.text_encoder is not None:
+            # self.text_encoder = self.text_encoder.to(device, non_blocking=True)
+        if self.vae is not None:
+            self.vae = self.vae.to(device, non_blocking=True)
+        return self
+
 
 # Convenience function for easy access
 def RefinerPipeline(
