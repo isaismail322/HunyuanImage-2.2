@@ -157,7 +157,7 @@ class CheckpointDownloader:
         return True, "All checkpoints downloaded successfully", results
 
 
-@space_context(duration=200)
+@space_context(duration=2000)
 def load_pipeline(use_distilled: bool = False, device: str = "cuda"):
     """Load the HunyuanImage pipeline (only load once, refiner and reprompt are accessed from it)."""
     try:
