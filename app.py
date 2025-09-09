@@ -174,7 +174,7 @@ def load_pipeline(use_distilled: bool = False, device: str = "cuda"):
         )
         pipeline.to('cpu')
         refiner_pipeline = pipeline.refiner_pipeline
-        # refiner_pipeline.text_encoder = pipeline.text_encoder
+        refiner_pipeline.text_encoder.model = pipeline.text_encoder.model
         refiner_pipeline.to('cpu')
         reprompt_model = pipeline.reprompt_model
 
