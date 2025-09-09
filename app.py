@@ -444,7 +444,7 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                             )
                             use_refiner = gr.Checkbox(
                                 label="Use Refiner", value=True,
-                                info="Apply refiner after generation (comming soon)",
+                                info="Apply refiner after generation ",
                                 interactive=True
                             )
                         
