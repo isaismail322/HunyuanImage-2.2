@@ -443,9 +443,9 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                                 info="Enhance prompt automatically"
                             )
                             use_refiner = gr.Checkbox(
-                                label="Use Refiner", value=False,
+                                label="Use Refiner", value=True,
                                 info="Apply refiner after generation (comming soon)",
-                                interactive=False
+                                interactive=True
                             )
                         
                         generate_btn = gr.Button("🎨 Generate Image", variant="primary", size="lg")
