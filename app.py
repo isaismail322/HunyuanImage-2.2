@@ -50,12 +50,14 @@ except ImportError as e:
 
 
 BASE_DIR = os.environ.get('HUNYUANIMAGE_V2_1_MODEL_ROOT', './ckpts')
+
 class CheckpointDownloader:
     """Handles downloading of all required checkpoints for HunyuanImage."""
     
     def __init__(self, base_dir: str = BASE_DIR):
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(exist_ok=True)
+        print(f'Downloading checkpoints to: {self.base_dir}')
         
         # Define all required checkpoints
         self.checkpoints = {
@@ -215,6 +217,7 @@ class HunyuanImageApp:
                       ) -> Tuple[Optional[Image.Image], str]:
         """Generate an image using the HunyuanImage pipeline."""
         try:
+            torch.cuda.empty_cache()
 
             if self.pipeline is None:
                 return None, "Pipeline not loaded. Please try again."
@@ -252,6 +255,8 @@ class HunyuanImageApp:
                        ) -> Tuple[str, str]:
         """Enhance a prompt using the reprompt model."""
         try:
+            torch.cuda.empty_cache()
+
             # Load pipeline if needed
             if self.pipeline is None:
                 return prompt, "Pipeline not loaded. Please try again."
@@ -284,7 +289,9 @@ class HunyuanImageApp:
         try:
             if image is None:
                 return None, "Please upload an image to refine."
-            
+
+            torch.cuda.empty_cache()
+
             # Resize image to target dimensions if needed
             if image.size != (width, height):
                 image = image.resize((width, height), Image.Resampling.LANCZOS)
@@ -631,7 +638,7 @@ if __name__ == "__main__":
     
     demo.launch(
         server_name=args.host,
-        server_port=args.port,
+        # server_port=args.port,
         share=False,
         show_error=True,
         quiet=False,
