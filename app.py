@@ -173,8 +173,8 @@ def load_pipeline(use_distilled: bool = False, device: str = "cuda"):
             enable_refiner_offloading=True
         )
         pipeline.to('cpu')
-        refiner_pipeline = pipeline.refiner_pipeline
-        refiner_pipeline.to('cpu')
+        # refiner_pipeline = pipeline.refiner_pipeline
+        # refiner_pipeline.to('cpu')
         reprompt_model = pipeline.reprompt_model
 
         print("✓ Pipeline loaded successfully")
@@ -442,9 +442,9 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                                 info="Enhance prompt automatically"
                             )
                             use_refiner = gr.Checkbox(
-                                label="Use Refiner", value=True,
-                                info="Apply refiner after generation",
-                                interactive=True
+                                label="Use Refiner", value=False,
+                                info="Apply refiner after generation (comming soon)",
+                                interactive=False
                             )
                         
                         generate_btn = gr.Button("🎨 Generate Image", variant="primary", size="lg")
@@ -501,71 +501,71 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
                         )
             
             # # Tab 3: Image Refinement
-            with gr.Tab("🔧 Image Refinement"):
-                with gr.Row():
-                    with gr.Column(scale=1):
-                        gr.Markdown("### Refinement Settings")
-                        gr.Markdown("**Model**: HunyuanImage v2.1 Refiner")
+            # with gr.Tab("🔧 Image Refinement"):
+            #     with gr.Row():
+            #         with gr.Column(scale=1):
+            #             gr.Markdown("### Refinement Settings")
+            #             gr.Markdown("**Model**: HunyuanImage v2.1 Refiner")
                         
-                        input_image = gr.Image(
-                            label="Input Image",
-                            type="pil",
-                            height=300
-                        )
+            #             input_image = gr.Image(
+            #                 label="Input Image",
+            #                 type="pil",
+            #                 height=300
+            #             )
                         
-                        refine_prompt = gr.Textbox(
-                            label="Refinement Prompt",
-                            placeholder="Make the image more detailed and high quality",
-                            lines=2,
-                            value="Make the image more detailed and high quality"
-                        )
+            #             refine_prompt = gr.Textbox(
+            #                 label="Refinement Prompt",
+            #                 placeholder="Make the image more detailed and high quality",
+            #                 lines=2,
+            #                 value="Make the image more detailed and high quality"
+            #             )
                         
-                        refine_negative_prompt = gr.Textbox(
-                            label="Negative Prompt",
-                            placeholder="",
-                            lines=2,
-                            value=""
-                        )
+            #             refine_negative_prompt = gr.Textbox(
+            #                 label="Negative Prompt",
+            #                 placeholder="",
+            #                 lines=2,
+            #                 value=""
+            #             )
                         
-                        with gr.Row():
-                            refine_width = gr.Slider(
-                                minimum=512, maximum=2048, step=64, value=2048,
-                                label="Width", info="Output width"
-                            )
-                            refine_height = gr.Slider(
-                                minimum=512, maximum=2048, step=64, value=2048,
-                                label="Height", info="Output height"
-                            )
+            #             with gr.Row():
+            #                 refine_width = gr.Slider(
+            #                     minimum=512, maximum=2048, step=64, value=2048,
+            #                     label="Width", info="Output width"
+            #                 )
+            #                 refine_height = gr.Slider(
+            #                     minimum=512, maximum=2048, step=64, value=2048,
+            #                     label="Height", info="Output height"
+            #                 )
                         
-                        with gr.Row():
-                            refine_steps = gr.Slider(
-                                minimum=1, maximum=20, step=1, value=4,
-                                label="Refinement Steps", info="More steps = more refinement"
-                            )
-                            refine_guidance = gr.Slider(
-                                minimum=1.0, maximum=10.0, step=0.1, value=3.5,
-                                label="Guidance Scale", info="How strongly to follow the prompt"
-                            )
+            #             with gr.Row():
+            #                 refine_steps = gr.Slider(
+            #                     minimum=1, maximum=20, step=1, value=4,
+            #                     label="Refinement Steps", info="More steps = more refinement"
+            #                 )
+            #                 refine_guidance = gr.Slider(
+            #                     minimum=1.0, maximum=10.0, step=0.1, value=3.5,
+            #                     label="Guidance Scale", info="How strongly to follow the prompt"
+            #                 )
                         
-                        refine_seed = gr.Number(
-                            label="Seed", value=-1, precision=0,
-                            info="Random seed for reproducibility"
-                        )
+            #             refine_seed = gr.Number(
+            #                 label="Seed", value=-1, precision=0,
+            #                 info="Random seed for reproducibility"
+            #             )
                         
-                        refine_btn = gr.Button("🔧 Refine Image", variant="primary", size="lg")
+            #             refine_btn = gr.Button("🔧 Refine Image", variant="primary", size="lg")
                     
-                    with gr.Column(scale=1):
-                        gr.Markdown("### Refined Image")
-                        refined_image = gr.Image(
-                            label="Refined Image",
-                            type="pil",
-                            height=600
-                        )
-                        refinement_status = gr.Textbox(
-                            label="Status",
-                            interactive=False,
-                            value="Ready to refine"
-                        )
+            #         with gr.Column(scale=1):
+            #             gr.Markdown("### Refined Image")
+            #             refined_image = gr.Image(
+            #                 label="Refined Image",
+            #                 type="pil",
+            #                 height=600
+            #             )
+            #             refinement_status = gr.Textbox(
+            #                 label="Status",
+            #                 interactive=False,
+            #                 value="Ready to refine"
+            #             )
         
         # Event handlers
         generate_btn.click(
@@ -583,14 +583,14 @@ def create_interface(auto_load: bool = True, use_distilled: bool = False, device
             outputs=[enhanced_prompt, enhancement_status]
         )
         
-        refine_btn.click(
-           fn=app.refine_image,
-           inputs=[
-               input_image, refine_prompt, refine_negative_prompt,
-               refine_width, refine_height, refine_steps, refine_guidance, refine_seed
-           ],
-           outputs=[refined_image, refinement_status]
-        )
+        # refine_btn.click(
+        #    fn=app.refine_image,
+        #    inputs=[
+        #        input_image, refine_prompt, refine_negative_prompt,
+        #        refine_width, refine_height, refine_steps, refine_guidance, refine_seed
+        #    ],
+        #    outputs=[refined_image, refinement_status]
+        # )
         
         # Additional info
         gr.Markdown(
